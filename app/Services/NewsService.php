@@ -32,20 +32,17 @@ class NewsService
                 $time = $news['published_at'];
                 $symbols = isset($news['currencies']) ? implode(',', array_column($news['currencies'], 'code')) : '';
 
-                // Haber verilerini bir araya getir
                 $newsData = [
                     'title' => $title,
                     'time' => $time,
                     'symbols' => $symbols,
                 ];
 
-                // Log işlemi ve Redis'e kaydetme
                 Log::info("Redis'e kaydediliyor: {$title}, {$time}, {$symbols}");
                 $this->newsRepository->saveNews($newsData);
             }
 
         } catch (\Exception $e) {
-            // Eğer hata olursa log'la
             Log::error('CryptoPanic API verileri çekilirken bir hata oluştu: ' . $e->getMessage());
         }
     }
